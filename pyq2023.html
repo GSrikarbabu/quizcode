@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+ <title>PRELIMS GS  2023 </title>
+ <link rel="stylesheet" href="style.css">
+<style>
+
+
+body{
+ margin:0;
+ background-color:#060404;
+ font-family: "Comic Sans MS", "Comic Sans", cursive;
+ background-image: url('21.jpg');
+ background-filter: brightness(40%);
+ background-repeat: no-repeat;
+ background-attachment: fixed;  
+ background-size: cover;
+ 
+
+
+ 
+}
+*{
+ box-sizing: border-box;
+}
+
+
+
+table {
+  
+  border-collapse: collapse;
+  width: 100%;
+}
+
+td, th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+}
+
+tr:nth-child(even) {
+  
+}
+
+.quiz-container{
+ max-width: 700px;
+ min-height:500px;
+ background-color: #ffffff;
+ margin:40px auto;
+ opacity:.9;
+ border-radius:10px;
+ padding:30px;
+ style="max-width:100%;height:auto;
+}
+.quiz-container::after,.quiz-container::before{
+ content: '';
+ clear: both;
+ display: table;
+
+}
+.question-number,
+.question,
+.options,
+.button,
+.answers-tracker{
+ float: left;
+ width: 100%;
+}
+.question-number h3{
+ color:#009688;
+ border-bottom: 1px solid #ccc;
+ margin:0;
+ padding-bottom:10px;
+}
+
+.question {
+ font-size:22px;
+ color:000000;
+ padding:20px 0;
+
+}
+
+.options div{
+  background-color: #cccccc;
+  font-size:16px;
+  color:000000;
+  margin-bottom:10px;
+  border-radius:5px;
+  padding:15px;
+  position: relative;
+  overflow:hidden;
+  cursor: pointer;
+}
+.options div.disabled{
+ pointer-events: none;
+}
+.options div.correct{
+ z-index: 1;
+ color: #fff;
+}
+.options div.correct::before{
+ content: '';
+ position: absolute;
+ left:0;
+ top:0;
+ width: 100%;
+ height: 100%;
+ background-color: green;
+ z-index: -1;
+
+ animation: animateBackground 1s ease;
+ animation-fill-mode: forwards;
+}
+@keyframes animateBackground{
+ 0%{
+  transform: translateX(-100%);
+ }
+ 100%{
+  transform: translateX(0%);
+ }
+}
+.options div.wrong{
+ z-index: 1;
+ color: #fff;
+}
+.options div.wrong::before{
+ content: '';
+ position: absolute;
+ left:0;
+ top:0;
+ width: 100%;
+ height: 100%;
+ background-color:white;
+ z-index: -1;
+
+ animation: animateBackground 1s ease;
+ animation-fill-mode: forwards;
+}
+@keyframes animateBackground{
+ 0%{
+  transform: translateX(-100%);
+ }
+ 100%{
+  transform: translateX(0%);
+ }
+}
+
+.button .btn{
+ padding:15px 50px;
+ border-radius:5px;
+ cursor: pointer;
+ background-color:#009688;
+ font-size:16px;
+ color:#ffffff;
+ border: none;
+ display: inline-block;
+ margin:15px 0 20px;
+}
+
+
+.answers-tracker div.correct{
+ background-color: green;
+ background-image:url('img/correct.png');
+ background-position: center;
+ background-repeat: no-repeat;
+ background-size: 50%;
+
+}
+.answers-tracker div.wrong{
+ background-color: white;
+ background-image:url('img/wrong.png');
+ background-position: center;
+ background-repeat: no-repeat;
+ background-size: 50%;
+}
+
+.quiz-over{
+ position: fixed;
+ left:0;
+ top:0;
+ width: 100%;
+ height: 100%;
+ background-color:rgba(0,0,0,0.9);
+ z-index: 10;
+ display: none;
+ align-items: center;
+ justify-content: center;
+}
+.quiz-over.show{
+ display: flex;
+}
+.quiz-over .box{
+ background-color: #009688;
+ padding:30px;
+ border-radius:10px;
+ text-align: center;
+ flex-basis: 400vw;
+ max-width:700px;
+ color:#ffffff;
+}
+
+.quiz-over .box h1{
+ font-size:20px auto;
+ margin:0 0 20px;
+}
+
+.quiz-over .box button{
+ padding:15px 50px;
+ border:none;
+ background-color:#FF9800;
+ border-radius:5px;
+ font-size:16px;
+ margin:15px 0 20px;
+ color:#ffffff;
+}
+
+</style>
+</head>
+<body>
+     <div class="quizContainer container-fluid well well-lg">
+        <div id="quiz1" class="text-center">
+   <h1 style="color:#ffffff;position:center;left:80%;top:0%;" align="Center" ><span id="X">PRELIMS 2023 </span><br/><span id='X' style="font-size:25px;"></span></h1>
+   <h2 Style="color:#ffffff;position:center;left:80%;top0%;" align="center" "font-size:25px;"><samp id="Sub heading"> </samp></h2>
+         
+  </div>
+ <div class="quiz-container">
+    <div class="question-number">
+       <h3>Question <span class="question-num-value"></span> of <span class="total-question"></span></h3>
+    </div>
+    <div class="question">
+   
+    </div>
+    <div class="options">
+       <div id="1" class="option1" onclick="check(this)"></div>
+       <div id="2" class="option2" onclick="check(this)"></div>
+       <div id="3" class="option3" onclick="check(this)"></div>
+       <div id="4" class="option4" onclick="check(this)"></div>
+    </div>
+    <div class="button">
+       <button type="button" class="btn" onclick="next()">Next</button>
+    </div>
+    <div class="answers-tracker">
+     
+    </div>
+ </div>
+
+ <div class="quiz-over">
+   <div class="box">
+     <h1>
+       Good Try!<br>
+      You Got <span class="correct-answers"></span> out of <span class="total-question2"></span> answers correct! <br>
+      That's <span class="percentage"></span>
+     </h1>
+     <button type="button" onclick="tryAgain()">TryAgain</button>
+   </div>
+ </div>
+
+ <script src="script.js"></script>
+<script>
+
+  const options=document.querySelector(".options").children;
+  const answerTrackerContainer=document.querySelector(".answers-tracker");
+  const questionNumberSpan=document.querySelector(".question-num-value");
+  const totalQuestionSpan=document.querySelector(".total-question");
+  const correctAnswerSpan=document.querySelector(".correct-answers");
+  const totalQuestionSpan2=document.querySelector(".total-question2");
+  const percentage=document.querySelector(".percentage");
+  const question=document.querySelector(".question");
+  const op1=document.querySelector(".option1");
+  const op2=document.querySelector(".option2");
+  const op3=document.querySelector(".option3");
+  const op4=document.querySelector(".option4");
+  let questionIndex;
+  let index=0;
+  let myArray=[];
+  let myArr=[];
+  let score=0;
+
+  // questions and options and answers
+
+  const questions=[
+   {
+    q:'In which one of the following regions was Dhanyakataka,which flourished as a prominent Buddhist centre under the Mahasanghikas, located?',
+    options:['Andhra ','Gandhara ','Kalinga','Magadha'],
+    answer:1
+   },
+   {
+    q:'With reference to ancient India, consider the following statements: <br><br>1. The concept of Stupa is Buddhist in origin.<br>2. Stupa was generally a repository of relics.<br>3. Stupa was a votive and commemorative structure in Buddhist tradition.<br><br>How many of the statements given above are correct?',
+    options:['Only one ','Only two ','All three','None'],
+    answer:2
+   },
+   {
+    q:'With reference to ancient South India, Korkai, Poompuhar and Muchiri were well known as',
+    options:['capital cities ','ports ','centres of iron-and-steel making','shrines of Jain Tirthankaras'],
+    answer:2
+   },
+   {
+    q:'Which one of the following explains the practice of "Vattakirutal" as mentioned in Sangam poems?',
+    options:['Kings employing women bodyguards.','Learned persons assembling in royal courts to discuss religious and philosophical matters','Young girls keeping watch over agricultural fields and driving away birds and animals','A king defeated in a battle committing ritual suicide by starving himself to death'],
+    answer:4
+   },
+   {
+    q:'Consider the following dynasties:<br><br>1. Hoysala<br>2. Gahadavala<br>3. Kakatiya<br>4. Yadava<br><br>How many of the above dynasties established their kingdoms in early eighth century AD?',
+    options:['Only one','Only two','Only three','None'],
+    answer:4
+   },
+   {
+    q:'With reference to ancient Indian History, consider the following pairs:<br><br>&emsp;&emsp;&emsp;&emsp;<strong>Literary work &emsp;&emsp;&emsp;&emsp;&emsp;&emsp; Author</strong><br>&emsp;&emsp;1. Devichandragupta &emsp;&emsp;: &emsp;&emsp;  Bilhana<br>&emsp;&emsp;2. Hammira-Mahakavya : Nayachandra Suri<br>&emsp;&emsp;3. Milinda-panha : Nagarjuna<br>&emsp;&emsp;4. Nitivakyamrita : Somadeva Suri<br><br>How many of the above pairs are correctly matched?',
+    options:['Only one','Only two','Only three','None'],
+    answer:2
+   },
+   {
+    q:'"Souls are not only the property of animal and plant life, but also of rocks, running water and many other natural objects not looked on as living by other religious sects." The above statement reflects one of the core beliefs of which one of the following religious sects of ancient India?',
+    options:['Buddhism','Jainism','Shaivism','Vaishnavism'],
+    answer:2
+   },
+   {
+    q:'Who among the following rulers of Vijayanagara Empire constructed a large dam across Tungabhadra River and canalcum-aqueduct several a kilometres long from the river to the capital city?',
+    options:['Devaraya I','Mallikarjuna','Vira Vijaya','Virupaksha'],
+    answer:1
+   },
+   {
+    q:'Who among the following rulers of medieval Gujarat  surrendered Diu to Portuguese?',
+    options:['Ahmad Shah','Mahmud Begarha','Bahadur Shah','Muhammad Shah'],
+    answer:3
+   },
+   {
+    q:'By which one of the following Acts was the Governor General  of Bengal designated as the Governor General of India?',
+    options:['The Regulating Act ','The Pitt"s India Act ','The Charter Act of 1793','The Charter Act of 1833'],  
+     answer:4
+   },
+   {
+    q:'In essence, what does "Due Process of Law" mean?',
+    options:['The principle of natural justice ','The procedure established by law','Fair application of law','Equality before law'],
+    answer:1
+   },
+
+   {
+    q:'Consider the following statements:<br><br>Statement-I: In India, prisons are managed by State Governments with their own rules and regulations for the day-to-day administration of prisons. <br>Statement-II: In India, prisons are governed by the Prisons Act, 1894 which expressly kept the subject of prisons in the control of Provincial Governments.<br><br>Which one of the following is correct in respect of the above statements?',
+    options:['Both Statement-I and Statement-II are correct and Statement-II is the correct explanation for Statement-I','Both Statement-I and Statement-II are correct and Statement-II is not the correct explanation for Statement-I','Both Statement-I and Statement-II are correct and Statement-II is not the correct explanation for Statement-I','Statement-I is incorrect but Statement-II is correct'],
+    answer:1
+   },
+   {
+    q:'Which one of the following statements best reflects the Chief purpose of the "Constitution" of a country?',
+    options:['It determines the objective for the making of necessary laws.','It enables the creation of political offices and a government.','It defines and limits the powers of government.','It secures social justice, social equality and social security.'],
+    answer:3
+   },
+   {
+    q:'In India, which one of the following Constitutional Amendments was widely believed to be enacted to overcome the judicial interpretations of the Fundamental Rights?',
+    options:['1st Amendment','42nd Amendment','44th Amendment','86th Amendment'],
+    answer:1
+   },
+   {
+    q:'Consider the following organizations/bodies in India: <br><br>1. The National Commission for Backward Classes <br>2. The National Human Rights Commission<br>3. The National Law Commission<br>4. The National Consumer Disputes Redressal Commission<br><br>How many of the above constitutional bodies?',
+    options:['Only one','Only two','Only three','All four'],
+    answer:1
+   },
+   {
+    q:'Consider the following statements:<br><br>1. If the election of the President of India is declared void by the Supreme Court of India, all acts done by him/her in the performance of duties of his/her office of President before the date of decision become invalid.<br>2. Election for the post of the President of India can be postponed on the ground that some Legislative Assemblies have been dissolved and elections are yet to take place.<br>3. When a Bill is presented to the President of India, the Constitution prescribes time limits within which he/she has to declare his/her assent. <br><br>How many of the above statements are correct?',
+    options:['Only one','Only two','All three','None'],
+    answer:4
+   },
+   {
+    q:'With reference to Finance Bill and Money Bill in the Indian Parliament, consider the following statements:<br><br>1. When the Lok Sabha transmits Finance Bill to the Rajya Sabha, it can amend or reject the Bill.<br>2. When the Lok Sabha transmits Money Bill to the Rajya Sabha, it cannot amend or reject the Bill, it can only make recommendations.<br>3. In the case of disagreement between the Lok Sabha and the Rajya Sabha, there is no joint sitting for Money Bill, but a joint sitting becomes necessary for Finance Bill.<br><br>How many of the above statements are correct?',
+    options:['Only one','Only two','All three','None'],
+    answer:1
+   },
+   {
+    q:'Consider the following statements:Once the Central Government notifies an area as a "Community Reserve"<br><br>1. the Chief Wildlife Warden of the State becomes the governing authority of such forest<br>2. hunting is not allowed in such area<br>3. people of such area are allowed to collect non-timber forest produce<br>4. people of such area are allowed traditional agricultural practices<br><br>How many of the above statements are correct?',
+    options:['Only one','Only two','All three','All four'],
+    answer:3
+   },
+   {
+    q:'With reference to Scheduled Areas in India, consider the following statements:<br><br>1. Within a State, the notification of an area as Scheduled Area takes place through an Order of the President.<br>2. The largest administrative unit forming the Scheduled Area is the District and the lowest is the cluster of villages in the Block.<br>3. The Chief Ministers of the concerned States are required to submit annual reports to the Union Home Ministry on the administration of Scheduled Areas in the States.<br><br>How many of the above statements are correct?',
+    options:['Only one','Only two','All three','None'],
+    answer:2
+   },
+   {
+    q:'Consider the following statements: <br><br>Statement-I: The Supreme Court of India has held in some judgements that the reservation policies made under Article 16(4) of the Constitution of India would be limited by Article 335 for maintenance of efficiency of administration. <br>Statement-II: Article 335 of the Constitution of India defines the term "efficiency of administration".<br><br>Which one of the following is correct in respect of the above statements?',
+    options:['Both Statement-I and Statement-II are correct and Statement-II is the correct explanation for Statement-I','Both Statement-I and Statement-II are correct and Statement-II is not the correct explanation for Statement-I','Statement-I is correct but Statement-II is incorrect','Statement-I is incorrect but Statement-II is correct'],
+    answer:3
+   },
+   {
+    q:'Consider the following statements:<br><br>Statement-I: India, despite having uranium deposits, depends on coal for most its electricity production.<br>Statement-II: Uranium, enriched to the extent at of least 60%, is required for the production of electricity.<br><br>Which one of the following is correct in respect of the above statements?',
+    options:['Both Statement-I and Statement-II are correct and Statement-II is the correct explanation for Statement-I','Both Statement-I and Statement-II are correct and Statement-II is not the correct explanation for Statement-I','Statement-I is correct but Statement-II is incorrect','Statement-I is incorrect but Statement-II is correct'],
+    answer:3
+   },
+   {
+    q:'Consider the following statements:<br><br>Statement-1: Marsupials are not naturally found in India.<br>Statement-II: Marsupials can thrive only in montane grasslands with no predators. <br><br>Which one of the following is correct in respect of the above statements?',
+    options:['Both Statement-I and Statement-II are correct and Statement-II is the correct explanation for Statement-I','Both Statement-I and Statement-II are correct and Statement-II is not the correct explanation for Statement-I','Statement-I is correct but Statement-II is incorrect','Statement-I is incorrect but Statement-II is correct'],
+    answer:3
+   },
+   {
+    q:'‘Invasive Species Specialist Group’ (that develops Global Invasive Species Database) belongs to which one of the following organizations?',
+    options:['The International Union for Conservation of Nature','The United Nations Environment Programme','The United Nations World Commission for Environment and Development ','The World Wide Fund for Nature'],
+    answer:1
+   },
+   {
+    q:'Consider the following fauna:<br><br>1. Lion-tailed Macaque<br>2. Malabar Civet<br>3. Sambar Deer<br><br>How many of the above are generally nocturnal or most active after sunset?',
+    options:['Only one','Only two','All three','None'],
+    answer:2
+   },
+   {
+    q:'Which of the following organisms perform waggle dance for others of their kin to indicate the direction and the distance to a source of their food?',
+    options:['Butterflies','Dragonflies','Honeybees ','Wasps'],
+    answer:3
+   },
+   {
+    q:'26Consider the following statements:<br><br>1. Some mushrooms have medicinal properties.<br>2. Some mushrooms have psycho-active properties.<br>3. Some mushrooms have insecticidal properties.<br>4. Some mushrooms have bioluminescent properties.<br><br>How many of the above statements are correct?',
+    options:['Only one','Only two','All three','All four'],
+    answer:4
+   },
+   {
+    q:'Consider the following statements regarding the Indian squirrels:<br><br>1. They build nests by making burrows in the ground.<br>2. They store their food materials like nuts and seeds in the ground.<br>3. They are omnivorous.<br><br>How many of the above statements are correct?',
+    options:['Only one','Only two','All three','None'],
+    answer:2
+   },
+   {
+    q:'Consider the following statements:<br><br>1. Some microorganisms can grow in environments with temperature above the boiling point of water.<br>2. Some microorganisms can grow in environments with temperature below the freezing point of water. <br>3. Some microorganisms can grow in highly acidic environment with a pH below 3.<br><br>How many of the above statements are correct?',
+    options:['Only one','Only two','All three','None'],
+    answer:3
+   },
+   {
+    q:'Which one of the following makes a toolwith a stick to scrapinsects from a hole in atree or a log of wood?',
+    options:['Fishing cat','Orangutan','Otter','Sloth bear'],
+    answer:2
+   },
+   {
+    q:'Consider the following:<br><br>1. Aerosols<br>2. Foam agents<br>3. Fire retardants<br>4. Lubricants<br><br>In the making of how many of the above are hydrofluorocarbons used?',
+    options:['Only one','Only two','All three','All four'],
+    answer:4
+   },
+   {
+    q:'Consider the following statements:<br><br>1. Jhelum River passesthrough Wular Lake.<br>2. Krishna River directly feeds KolleruLake<br>3. Meandering ofGandak River formedKanwar Lake.<br><br>How many of thestatements givenabove are correct?',
+    options:['Only one','Only two','All three','None'],
+    answer:1
+   },
+   {
+    q:'Consider the following pairs:<br><br>&emsp;&emsp;&emsp;&emsp;<strong>Port &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;  Well known as</strong><br>&emsp;1. Kamarajar Port &emsp;: &emsp;First major port in India registered <br> &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; as a company<br>&emsp;2. Mundra Port &emsp;&emsp;&nbsp;:&emsp;Largest privatelyowned port in India<br>&emsp;3. Visakhapatnam &nbsp;&nbsp;&nbsp;:&emsp;Largest container portin India<br><br>How many of theabove pairs arecorrectly matched?',
+    options:['Only one pair','Only two pairs','All three pairs','None of the pairs'],
+    answer:2
+   },
+   {
+    q:'Consider the following trees:<br><br>1. Jackfruit (Artocarpus heterophyllus)<br>2. Mahua (Madhuca indica)<br>3. Teak (Tectona grandis)<br><br>How many of the above are deciduous trees?',
+    options:['Only one ','Only two ','All three ','None '],
+    answer:2
+   },
+   {
+    q:'Consider the following statements: <br><br>1. India has more arable area than China.<br>2. The proportion of irrigated area is more in India as compared to China.<br>3. The average productivity per hectare in Indian agriculture is higher than that in China. <br><br>How many of the above statements are correct?',
+    options:['Only one ','Only two ','All three ','None '],
+    answer:2
+   },
+   {
+    q:'Which one of the following is the best example of repeated falls in sea level, giving rise to present-day extensive marshland?',
+    options:['Bhitarkanika Mangroves','Marakkanam Salt Pans ','Naupada Swamp','Rann of Kutch '],
+    answer:4
+   },
+   {
+    q:'Ilmenite and rutile, abundantly available in certain coastal tracts of India, are rich sources of which one of the following?',
+    options:['Aluminium','Copper','Iron','Titanium'],
+    answer:4
+   },
+    {
+    q:'‘About three-fourths of world’s cobalt, a metal required for the manufacture of batteries for electric motor vehicles, is produced by',
+    options:['Argentina','Botswana','the Democratic Republic of the Congo','Kazakhstan'],
+    answer:4
+   },
+    {
+    q:'Which one of the following is a part of the Congo Basin?',
+    options:['Cameroon','Nigeriaa','South Sudan','Uganda'],
+    answer:4
+   },
+   {
+    q:'Consider the following statements:<br><br>1. Amarkantak Hills are at confluence of Vindhya and the Sahyadri Ranges.<br>2. Biligirirangan Hills constitute the easternmost part of Satpura Range. <br>3.Seshachalam Hills constitute the southernmost part of Western Ghats.',
+    options:['Only one','Only two','All three','None'],
+    answer:4
+   },
+    {
+    q:'With reference to India’s projects on connectivity, consider the following statements :<br><br>1. East-West Corridor under Golden Quadrilateral Project connects Dibrugarh and Surat.<br>2. Trilateral Highway connects Moreh in Manipur and Chiang Mai in Thailand via Myanmar. <br>3. Bangladesh-China-India-Myanmar Economic Corridor connects Varanasi inUttar Pradesh with Kunming in China.<br><br>How many of the above statements are correct?',
+    options:['Only one','Only two','All three','None'],
+    answer:4
+   },
+    {
+    q:'Consider the following statements: <br><br>Statement-I: Interest income from the deposits in Infrastructure Investment Trusts (InvITs) distributed to their investors is exempted from tax, but the dividend is taxable. <br><br>Statement-II: InviTs are recognized as borrowers under the ‘Securitization and Recon struction of Financial Assets and Enforcement of Security Interest Act, 2002’.<br><br>Which one of the following is correct in respect of the above statements?',
+    options:['Both Statement-I and Statement-II are correct and Statement-II is the correct explanation for Statement-I','Both Statement-I and Statement-II are correct and Statement-II is not the correct explanation for Statement-I','Statement-I is correct but Statement-II is incorrect','Statement-I is incorrect but Statement-II is correct'],
+    answer:3
+   },
+    {
+    q:'Consider the following statements :<br><br>Statement-I: In the post-pandemic recent past, many Central Banks worldwide had carried out interest rate hikes. <br>Statement-II: Central Banks generally assume that they have the ability to counteract the rising consumer prices via monetary policy means. <br><br>Which one of the following is correct in respect of the above statements?',
+    options:['Both Statement-I and Statement-II are correct and Statement-II is the correct explanation for Statement-I','Both Statement-I and Statement-II are correct and Statement-II is not the correct explanation for Statement-I','Statement-I is correct but Statement-II is incorrect','Statement-I is incorrect but Statement-II is correct'],
+    answer:3
+   },
+   {
+    q:'Consider the following statements:<br><br>Statement-I: Carbon markets are likely to be one of the most widespread tools in the fight against climate change.<br>Statement-II: Carbon markets transfer resources from the private sector to the State<br><br>Which one of the following is correct in respect of the above statements?',
+    options:['Both Statement-I and Statement-II are correct and Statement-II is the correct explanation for Statement-I','Both Statement-I and Statement-II are correct and Statement-II is not the correct explanation for Statement-I','Statement-I is correct but Statement-II is incorrect','Statement-I is incorrect but Statement-II is correct'],
+    answer:4
+   },
+   {
+    q:'Which one of the following activities of the Reserve Bank of India is considered to be part of ‘sterilization’?',
+    options:['Conducting ‘Open Market Operations’','Oversight of settlement and payment systems','Debt and cash management for the Central and State Governments','Regulating the functions of Non-banking Financial Institutions'],
+    answer:4
+   },
+   {
+    q:'Consider the following markets: <br><br>1. Government Bond Market <br>2. Call Money Market<br>3. Treasury Bill Market <br>4. Stock Market<br><br>How many of the above are included in capital markets?',
+    options:['Only one','Only two','Only three','All four'],
+    answer:4
+   },
+   {
+    q:'Which one of the following best describes the concept of ‘Small Farmer Large Field’?',
+    options:['Resettlement of a large number of people, uprooted from their countries due to war, by giving them a large cultivable land which they cultivate collectively and share the produce','Many marginal farmers in an area organize themselves into groups and synchronize and harmonize selected agricultural operations','Many marginal farmers in an area together make a contract with a corporate body and surrender their land to the corporate body for a fixed term for which the corporate body makes a payment of agreed amount to the farmers','A company extends loans, technical knowledge and material inputs to a number of small farmers in an area so that they produce the agricultural commodity required by the company for its manufacturing process and commercial production'],
+    answer:4
+   },
+   {
+    q:'Consider the following statements:<br><br>1. The Government of India provides Minimum Support Price for niger (Guizotia abyssinica)seeds.<br>2. Niger is cultivated as a Kharif crop.<br>3. Some tribal people in India use niger seed oil for cooking.<br><br>How many of the above statements are correct?',
+    options:['Only one','Only two','All three','None'],
+    answer:4
+   },
+   {
+    q:'Consider the investments in the following assets:<br><br>1. Brand recognition <br>2. Inventory <br>3. Intellectual property <br>4. Mailing list of clients<br><br>How many of the above are considered intangible investments?',
+    options:['Only one','Only two','All three','All four'],
+    answer:4
+   },
+   {
+    q:'Consider the following:<br><br>1. Demographic performance <br>2. Forest and ecology<br>3. Governance reforms 4. Stable government<br>5. Tax and fiscal efforts<br><br>For the horizontal tax devolution, the Fifteenth Finance Commission used how many of the above as criteria other than population area and income distance?',
+    options:['Only two','All three','Only four','All five'],
+    answer:4
+   },
+   {
+    q:'CConsider the following infrastructure sectors:<br><br>1. Affordable housing <br>2. Mass rapid transport<br>3. Health care <br>4. Renewable energy<br><br>On how many of the above does UNOPS Sustainable Investments in Infrastructure and Innovation (S3i) initiative focus for its investments?',
+    options:['Only one','Only two','All three','All four'],
+    answer:4
+   },
+   {
+    q:'With reference to Home Guards, consider the following statements:<br><br>1. Home Guards are raised under the Home Guards Act and Rules of the Central Government.<br>2. The role of the Home Guards is to serve as an auxiliary force to the police in maintenance of internal security.<br>3. To prevent infiltration on the international border/coastal areas, the Border Wing Home Guards Battalions have been raised in some States.<br><br>How many of the above statements are correct?',
+    options:['Only one','Only two','All three','None'],
+    answer:4
+   },
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   
+  ]
+
+  // set questions and options and question number
+  totalQuestionSpan.innerHTML=questions.length;
+  function load(){
+        questionNumberSpan.innerHTML=index+1;
+         question.innerHTML=questions[questionIndex].q;   
+         op1.innerHTML=questions[questionIndex].options[0];
+         op2.innerHTML=questions[questionIndex].options[1];
+         op3.innerHTML=questions[questionIndex].options[2];
+         op4.innerHTML=questions[questionIndex].options[3];
+         index++;
+  }
+
+  function check(element){
+   if(element.id==questions[questionIndex].answer){
+    element.classList.add("correct");
+    updateAnswerTracker("correct")
+    score++;
+    console.log("score:"+score)
+   }
+   else{
+    element.classList.add("wrong");
+    updateAnswerTracker("wrong")
+
+   }
+   disabledOptions()
+  }
+ 
+  function disabledOptions(){
+     for(let i=0; i<options.length; i++) {
+      options[i].classList.add("enableOptions");
+      if(options[i].id==questions[questionIndex].answer){
+       options[i].classList.add("correct");
+      }
+
+     }
+  }
+
+  function enableOptions(){
+     for(let i=0; i<options.length; i++) {
+      options[i].classList.remove("enableOptions","correct","wrong");
+     }
+  }
+
+  function validate(){
+      if(!options[0].classList.contains("enableOptions")){
+        alert("Please Select one option")
+      }
+      else{
+       enableOptions();
+       randomQuestion();
+      }
+  }
+
+  function next(){
+    validate();
+  }
+ 
+  function randomQuestion(){
+   let randomNumber=Math.floor(Math.random()*questions.length);
+   let hitDuplicate=0;
+       if(index==questions.length){
+        quizOver();
+       }
+       else{
+         if(myArray.length>0){
+             for(let i=0; i<myArray.length; i++){
+               if(myArray[i]==randomNumber){
+                  hitDuplicate=1;
+                  break;
+               }
+             }
+             if(hitDuplicate==1){
+              randomQuestion();
+             }
+             else{
+               questionIndex=randomNumber; 
+              load();
+              myArr.push(questionIndex);
+             }
+         }
+         if(myArray.length==0){
+           questionIndex=randomNumber; 
+           load();
+           myArr.push(questionIndex);
+         }
+
+       myArray.push(randomNumber);
+     
+      }
+  }
+   
+  function answerTrakcer(){
+     for(let i=0; i<questions.length; i++){
+      const div=document.createElement("div")
+         answerTrackerContainer.appendChild(div);
+     }
+  }
+
+ function updateAnswerTracker(classNam){
+   answerTrackerContainer.children[index-1].classList.add(classNam);
+ }
+
+ function quizOver(){
+    document.querySelector(".quiz-over").classList.add("show");
+    correctAnswerSpan.innerHTML=score;
+    totalQuestionSpan2.innerHTML=questions.length;
+    percentage.innerHTML=(score/questions.length)*100 + "%";
+ }
+
+ function tryAgain(){
+     window.location.reload();
+ }
+
+ window.onload=function(){
+  randomQuestion();
+  answerTrakcer();
+
+}
+
+</script>
+
+</body>
+</html>
